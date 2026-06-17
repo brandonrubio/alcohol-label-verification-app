@@ -1,7 +1,6 @@
 import { Outlet, createRootRoute, createRoute, createRouter, redirect } from '@tanstack/react-router'
 
 import { AppShell } from '@/components/AppShell'
-import { BatchUpload } from '@/components/BatchUpload'
 import { ResultChecklist } from '@/components/ResultChecklist'
 import { StatusBadge } from '@/components/StatusBadge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
@@ -43,12 +42,6 @@ const verifyRoute = createRoute({
   component: VerifyPage,
 })
 
-const batchRoute = createRoute({
-  getParentRoute: () => appLayoutRoute,
-  path: '/batch',
-  component: BatchPage,
-})
-
 const historyRoute = createRoute({
   getParentRoute: () => appLayoutRoute,
   path: '/history',
@@ -65,7 +58,7 @@ const resultRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
-  appLayoutRoute.addChildren([indexRoute, verifyRoute, batchRoute, historyRoute, resultRoute]),
+  appLayoutRoute.addChildren([indexRoute, verifyRoute, historyRoute, resultRoute]),
 ])
 
 export const router = createRouter({
@@ -145,26 +138,12 @@ function VerifyPage() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-semibold">Verify a single label</h2>
+        <h2 className="text-xl font-semibold">Verify a label</h2>
         <p className="text-sm text-muted-foreground">
           Enter the COLA application details, upload the label image, and review the checklist.
         </p>
       </div>
       <VerificationForm />
-    </div>
-  )
-}
-
-function BatchPage() {
-  return (
-    <div className="space-y-4">
-      <div>
-        <h2 className="text-xl font-semibold">Batch verification</h2>
-        <p className="text-sm text-muted-foreground">
-          Process multiple labels against the same application data. Failures appear first.
-        </p>
-      </div>
-      <BatchUpload />
     </div>
   )
 }

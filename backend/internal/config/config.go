@@ -17,8 +17,7 @@ type Config struct {
 	AllowedOrigins    []string
 	MaxUploadBytes    int64
 	RequestTimeout    time.Duration
-	AIProvider        string
-	BatchConcurrency  int
+	AIProvider       string
 	SkipAuthInDev     bool
 }
 
@@ -30,7 +29,6 @@ func Load() (Config, error) {
 		GeminiAPIKey:     os.Getenv("GEMINI_API_KEY"),
 		GeminiModel:      envOr("GEMINI_MODEL", "gemini-2.5-flash"),
 		AIProvider:       envOr("AI_PROVIDER", "gemini"),
-		BatchConcurrency: envIntOr("BATCH_CONCURRENCY", 4),
 		SkipAuthInDev:    envOr("SKIP_AUTH_IN_DEV", "false") == "true",
 	}
 

@@ -48,56 +48,13 @@ func (h *Handler) CreateVerification(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := h.service.VerifyOne(r.Context(), user.ID, app, input, nil)
+	result, err := h.service.VerifyOne(r.Context(), user.ID, app, input)
 	if err != nil {
 		writeError(w, http.StatusBadGateway, "verification failed")
 		return
 	}
 
 	writeJSON(w, http.StatusOK, result)
-}
-
-func (h *Handler) CreateBatch(w http.ResponseWriter, r *http.Request) {
-	user, ok := userFromContext(r.Context())
-	if !ok {
-		unauthorized(w, "")
-		return
-	}
-
-	if err := r.ParseMultipartForm(h.cfg.MaxUploadBytes); err != nil {
-		badRequest(w, err)
-		return
-	}
-
-	app, err := parseApplicationJSON(r.FormValue("application"))
-	if err != nil {
-		badRequest(w, err)
-		return
-	}
-
-	files := r.MultipartForm.File["images"]
-	if len(files) == 0 {
-		badRequest(w, errors.New("at least one image is required"))
-		return
-	}
-
-	inputs := make([]domain.LabelInput, 0, len(files))
-	for _, header := range files {
-		input, err := fileToLabelInput(header, h.cfg.MaxUploadBytes)
-		if err != nil {
-			badRequest(w, err)
-			return
-		}
-		inputs = append(inputs, input)
-	}
-
-	batch, err := h.service.VerifyBatch(r.Context(), user.ID, app, inputs)
-	if err != nil {
-		writeError(w, http.StatusBadGateway, "batch verification failed")
-		return
-	}
-
-	writeJSON(w, http.StatusOK, batch)
 }
 
 func (h *Handler) GetVerification(w http.ResponseWriter, r *http.Request) {
@@ -134,27 +91,6 @@ func (h *Handler) ListVerifications(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"results": results})
-}
-
-func (h *Handler) GetBatch(w http.ResponseWriter, r *http.Request) {
-	user, ok := userFromContext(r.Context())
-	if !ok {
-		unauthorized(w, "")
-		return
-	}
-
-	id := r.PathValue("id")
-	if id == "" {
-		notFound(w)
-		return
-	}
-
-	batch, err := h.service.GetBatch(r.Context(), user.ID, id)
-	if err != nil {
-		notFound(w)
-		return
-	}
-	writeJSON(w, http.StatusOK, batch)
 }
 
 func (h *Handler) parseVerificationForm(r *http.Request) (domain.ApplicationData, domain.LabelInput, error) {

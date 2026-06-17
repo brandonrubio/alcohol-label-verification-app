@@ -37,10 +37,8 @@ func NewServer(
 	mux.Handle("GET /healthz", http.HandlerFunc(s.handler.Health))
 	mux.Handle("GET /api/v1/me", wrapProtected(s.handler.Me))
 	mux.Handle("POST /api/v1/verifications", wrapProtected(s.handler.CreateVerification))
-	mux.Handle("POST /api/v1/batches", wrapProtected(s.handler.CreateBatch))
 	mux.Handle("GET /api/v1/verifications", wrapProtected(s.handler.ListVerifications))
 	mux.Handle("GET /api/v1/verifications/{id}", wrapProtected(s.handler.GetVerification))
-	mux.Handle("GET /api/v1/batches/{id}", wrapProtected(s.handler.GetBatch))
 
 	s.httpServer = &http.Server{
 		Addr:              cfg.Addr,

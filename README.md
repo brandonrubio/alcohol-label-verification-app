@@ -44,7 +44,7 @@ This prototype models the **agent verification step** only:
 | **Production** | Loaded from the submission service (e.g. COLA or an internal case-management API) | Attached to the same submission record |
 
 
-There is no company-facing submission flow and no COLA integration in this build. Manual entry is a stand-in so reviewers can paste or type sample application fields and upload a label image to see the checklist. In a deployed product, the verify and batch screens would receive `application` data from the upstream service; the UI would focus on image upload (if needed), running verification, and reviewing results.
+There is no company-facing submission flow and no COLA integration in this build. Manual entry is a stand-in so reviewers can paste or type sample application fields and upload a label image to see the checklist. In a deployed product, the verify screen would receive `application` data from the upstream service; the UI would focus on image upload (if needed), running verification, and reviewing results.
 
 ### Why these choices
 
@@ -193,7 +193,7 @@ npm run build
 1. Start the Go API on port `8080`.
 2. Start the Vite dev server on port `5173`.
 3. Open `http://localhost:5173/login` and continue in demo mode.
-4. Use **Single label** or **Batch upload** to submit a label image plus application fields (entered manually in this POC; see [Workflow and data entry](#workflow-and-data-entry)).
+4. Use **Verify** to submit a label image plus application fields (entered manually in this POC; see [Workflow and data entry](#workflow-and-data-entry)).
 5. Review the checklist. Failures are listed first.
 
 With `AI_PROVIDER=fake`, the backend returns predictable sample extraction data without calling Gemini.
@@ -226,15 +226,13 @@ The root `[fly.toml](fly.toml)` builds `[backend/Dockerfile](backend/Dockerfile)
 
 - `GET /healthz`
 - `GET /api/v1/me`
-- `POST /api/v1/verifications` — single image + `application` JSON field
-- `POST /api/v1/batches` — multiple `images` + shared `application` JSON
+- `POST /api/v1/verifications` — image + `application` JSON field
 - `GET /api/v1/verifications`
 - `GET /api/v1/verifications/{id}`
-- `GET /api/v1/batches/{id}`
 
 ## Trade-offs and limitations
 
-- **5-second target**: Gemini Flash is used for speed, but network latency and image size still matter. Batch jobs run with bounded concurrency.
+- **5-second target**: Gemini Flash is used for speed, but network latency and image size still matter.
 - **Government warning boldness**: The prototype checks required wording and `GOVERNMENT WARNING:` casing. Bold formatting is routed to `needs_review` when confidence is low.
 - **Free tier**: Gemini free quotas are suitable for demos and assessment usage, not high-volume production.
 - **No COLA integration**: This is a standalone proof of concept, not connected to TTB systems. Application data is typed in for demos; production would pull it from the submission service.

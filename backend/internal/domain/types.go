@@ -52,7 +52,6 @@ type FieldResult struct {
 type Result struct {
 	ID           string          `json:"id"`
 	UserID       string          `json:"user_id,omitempty"`
-	BatchID      *string         `json:"batch_id,omitempty"`
 	Status       OverallStatus   `json:"status"`
 	ImageName    string          `json:"image_name"`
 	Application  ApplicationData `json:"application"`
@@ -60,17 +59,6 @@ type Result struct {
 	Fields       []FieldResult   `json:"fields"`
 	ProcessingMS int             `json:"processing_ms"`
 	CreatedAt    time.Time       `json:"created_at"`
-}
-
-type Batch struct {
-	ID             string    `json:"id"`
-	UserID         string    `json:"user_id,omitempty"`
-	Status         string    `json:"status"`
-	TotalCount     int       `json:"total_count"`
-	CompletedCount int       `json:"completed_count"`
-	Results        []Result  `json:"results,omitempty"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
 }
 
 type LabelInput struct {

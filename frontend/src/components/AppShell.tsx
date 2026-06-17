@@ -5,8 +5,7 @@ import { Separator } from '@/components/ui/separator'
 import { signOut } from '@/lib/auth'
 
 const navItems = [
-  { to: '/verify', label: 'Single label' },
-  { to: '/batch', label: 'Batch upload' },
+  { to: '/verify', label: 'Verify' },
   { to: '/history', label: 'History' },
 ] as const
 

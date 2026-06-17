@@ -37,9 +37,8 @@ func main() {
 		extractor ai.Extractor,
 		engine *rules.Engine,
 		repo *store.Repository,
-		cfg config.Config,
 	) *verification.Service {
-		return verification.NewService(extractor, engine, repo, cfg.BatchConcurrency)
+		return verification.NewService(extractor, engine, repo)
 	}))
 	must(container.Provide(httpapi.NewHandler))
 	must(container.Provide(httpapi.NewServer))

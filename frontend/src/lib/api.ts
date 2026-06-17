@@ -58,17 +58,4 @@ export const api = {
       body: form,
     })
   },
-  createBatch: (application: import('./types').ApplicationData, images: File[]) => {
-    const form = new FormData()
-    form.append('application', JSON.stringify(application))
-    for (const image of images) {
-      form.append('images', image)
-    }
-    return request<import('./types').VerificationBatch>('/api/v1/batches', {
-      method: 'POST',
-      body: form,
-    })
-  },
-  getBatch: (id: string) =>
-    request<import('./types').VerificationBatch>(`/api/v1/batches/${id}`),
 }

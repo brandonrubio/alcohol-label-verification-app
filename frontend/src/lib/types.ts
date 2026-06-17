@@ -36,7 +36,6 @@ export interface ApplicationData {
 export interface VerificationResult {
   id: string
   user_id?: string
-  batch_id?: string
   status: OverallStatus
   image_name: string
   application: ApplicationData
@@ -44,16 +43,6 @@ export interface VerificationResult {
   fields: FieldResult[]
   processing_ms: number
   created_at: string
-}
-
-export interface VerificationBatch {
-  id: string
-  status: string
-  total_count: number
-  completed_count: number
-  results?: VerificationResult[]
-  created_at: string
-  updated_at: string
 }
 
 export interface UserProfile {
