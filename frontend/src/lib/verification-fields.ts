@@ -1,4 +1,4 @@
-import type { ExtractedFields, FieldResult } from '@/lib/types'
+import type { FieldResult } from '@/lib/types'
 
 export const comparisonFieldOrder = [
   'brand_name',
