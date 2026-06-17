@@ -1,0 +1,27 @@
+app = "alcohol-label-verification-api"
+primary_region = "iad"
+
+[build]
+  dockerfile = "backend/Dockerfile"
+
+[env]
+  ADDR = ":8080"
+  AI_PROVIDER = "gemini"
+  GEMINI_MODEL = "gemini-2.5-flash"
+  REQUEST_TIMEOUT_SECONDS = "30"
+  MAX_UPLOAD_BYTES = "10485760"
+  BATCH_CONCURRENCY = "4"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "2s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/healthz"
